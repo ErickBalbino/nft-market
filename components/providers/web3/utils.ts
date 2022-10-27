@@ -12,7 +12,7 @@ export type Web3Params = {
   provider: providers.Web3Provider | null;
   contract: Contract | null;
 };
-
+ 
 export type Web3State = {
   isLoading: boolean;
 } & Web3Params;
