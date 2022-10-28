@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   
   if (provider) {
     getAccounts();
-  }
+   }
   
   return ( 
     <BaseLayout>
