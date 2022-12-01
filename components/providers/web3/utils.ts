@@ -48,6 +48,6 @@ export const LoadContract = async (
 
     return contract;
   } else {
-    return Promise.reject(`Contrato: ${name} não pode ser carregado!`)
+    return Promise.reject(`Contrato: ${name} não pode ser`)
   }
 };

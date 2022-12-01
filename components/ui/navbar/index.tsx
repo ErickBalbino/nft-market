@@ -6,6 +6,7 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import ActiveLink from '../link';
 import Link from "next/link";
+import { useAccount } from "@hooks";
 
 const navigation = [
   { name: "Marketplace", href: "/", current: true },
@@ -16,7 +17,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function Navbar() { 
+  const { data, isValidating, error } = useAccount("Some Random Params");
+
+  console.log("data:"+ data);
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
