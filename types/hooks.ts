@@ -14,9 +14,9 @@ export type CryptoHookFactory<D = any, P = any> = {
 
 export type CryptoHandlerHook<D = any, P = any> = (
   params: P
-) => CryptoSwrResponse<D>;
+) => CryptoSWRResponse<D>;
 
-export type CryptoSwrResponse<D = any> = SWRResponse<D>;
+export type CryptoSWRResponse<D = any> = SWRResponse<D>;
 
 // export type CryptoHookFactory<D = any, P = any> = {
 //   (d: Partial<Web3Dependencies>): (params: P) => SWRResponse<D>;

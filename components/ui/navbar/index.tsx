@@ -3,10 +3,10 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { useAccount } from "@hooks/web3";
 
-import ActiveLink from '../link';
+import ActiveLink from "../link";
 import Link from "next/link";
-import { useAccount } from "@hooks";
 
 const navigation = [
   { name: "Marketplace", href: "/", current: true },
@@ -17,10 +17,11 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() { 
-  const { data, isValidating, error } = useAccount("Some Random Params");
+export default function Navbar() {
+  const { account } = useAccount();
 
-  console.log("data:"+ data);
+  console.log(account.data);
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -51,7 +52,11 @@ export default function Navbar() {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <ActiveLink key={item.name} href={item.href} activeClass="bg-gray-900 text-white">
+                      <ActiveLink
+                        key={item.name}
+                        href={item.href}
+                        activeClass="bg-gray-900 text-white"
+                      >
                         <a
                           className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                           aria-current={item.current ? "page" : undefined}
@@ -97,7 +102,7 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <Link href="/profile">
-                            <a 
+                            <a
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
