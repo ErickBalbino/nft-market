@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { NftMetadata } from "../../../types/nft";
+import { NftMetadata } from "@_types/nft";
 
 import NftItem from "../item/index";
 
@@ -15,9 +15,7 @@ const NftList: FunctionComponent<NftsProps> = ({ nfts }) => {
           className="flex flex-col rounded-lg shadow-lg overflow-hidden"
           key={nft.image}
         >
-          <NftItem 
-            item={nft}
-          />
+          <NftItem item={nft} />
         </div>
       ))}
     </div>
