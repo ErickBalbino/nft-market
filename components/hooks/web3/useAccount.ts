@@ -1,21 +1,27 @@
 import { CryptoHookFactory } from "@_types/hooks";
 import { ethers } from "ethers";
+import { useEffect } from "react";
 import useSWR from "swr";
 
-type AccountHookFactory = CryptoHookFactory<string>;
+type UseAccountResponse = {
+  connect: () => void;
+  isLoading: boolean;
+  isInstalled: boolean;
+};
+
+type AccountHookFactory = CryptoHookFactory<string, UseAccountResponse>;
 
 export type UseAccountHook = ReturnType<AccountHookFactory>;
 
 export const hookFactory: AccountHookFactory =
-  ({ provider }) =>
+  ({ provider, ethereum, isLoading }) =>
   () => {
-    const swrResponse = useSWR(
+    const { data, isValidating, ...swrResponse } = useSWR(
       provider ? "web3/useAccount" : null,
       async () => {
         const provider = new ethers.providers.Web3Provider(
           window.ethereum as any
         );
-        await provider.send("eth_requestAccounts", []);
 
         const accounts = await provider.listAccounts();
         const account = accounts[0];
@@ -31,5 +37,38 @@ export const hookFactory: AccountHookFactory =
       }
     );
 
-    return swrResponse;
+    // reload when user change account
+    useEffect(() => {
+      ethereum?.on("accountsChanged", handleAccountChange);
+
+      return () => {
+        ethereum?.removeListener("accountsChanged", handleAccountChange);
+      };
+    });
+
+    const handleAccountChange = (...args: unknown[]) => {
+      const accounts = args[0] as string[];
+      if (accounts.length === 0) {
+        return alert("Por favor, conecte-se à Metamask!");
+      }
+
+      window.location.reload();
+    };
+
+    const connect = async () => {
+      try {
+        await ethereum?.request({ method: "eth_requestAccounts" });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    return {
+      ...swrResponse,
+      data,
+      isValidating,
+      connect,
+      isLoading: isLoading || isValidating,
+      isInstalled: ethereum?.isMetaMask || false,
+    };
   };

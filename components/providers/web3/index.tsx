@@ -23,19 +23,31 @@ const Web3Provider: FunctionComponent<Props> = ({ children }) => {
 
   useEffect(() => {
     const initWeb3 = async () => {
-      const provider = new ethers.providers.Web3Provider(
-        window.ethereum as any
-      );
-      const contract = await LoadContract("NftMarket", provider);
+      // verificar se o usuario possui a metamask instalada
+      try {
+        const provider = new ethers.providers.Web3Provider(
+          window.ethereum as any
+        );
+        const contract = await LoadContract("NftMarket", provider);
 
-      setWeb3Api(
-        createWeb3State({
-          ethereum: window.ethereum,
-          provider,
-          contract,
-          isLoading: false,
-        })
-      );
+        setWeb3Api(
+          createWeb3State({
+            ethereum: window.ethereum,
+            provider,
+            contract,
+            isLoading: false,
+          })
+        );
+      } catch (e: any) {
+        console.log(e);
+
+        setWeb3Api((api) =>
+          createWeb3State({
+            ...(api as any),
+            isLoading: false,
+          })
+        );
+      }
     };
 
     initWeb3();
