@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { Disclosure } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import { useAccount } from "@hooks/web3";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { useAccount, useNetwork } from "@hooks/web3";
 
 import ActiveLink from "../link";
 import WalletBar from "./WalletBar";
@@ -18,6 +18,9 @@ function classNames(...classes: string[]) {
 
 export default function Navbar() {
   const { account } = useAccount();
+  const { network } = useNetwork();
+
+  console.log(network.data);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -67,15 +70,19 @@ export default function Navbar() {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                <div className="text-gray-300 self-center mr-2">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800">
+                    <svg
+                      className="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400"
+                      fill="currentColor"
+                      viewBox="0 0 8 8"
+                    >
+                      <circle cx={4} cy={4} r={3} />
+                    </svg>
+                    {network.data}
+                  </span>
+                </div>
 
-                {/* Profile dropdown */}
                 <WalletBar
                   isLoading={account.isLoading}
                   isInstalled={account.isInstalled}
