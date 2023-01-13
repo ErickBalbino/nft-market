@@ -2,7 +2,7 @@
 
 import { Menu } from "@headlessui/react";
 import Link from "next/link";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 type WalletbarProps = {
   isLoading: boolean;
@@ -22,16 +22,21 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
   account,
 }) => {
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false);
-  try {
-    if (window.ethereum) {
-      setIsMetamaskInstalled(true);
-    } else {
-      setIsMetamaskInstalled(false);
+
+  useEffect(() => {
+    if (window) {
+      try {
+        if (window.ethereum) {
+          setIsMetamaskInstalled(true);
+        } else {
+          setIsMetamaskInstalled(false);
+        }
+      } catch (e) {
+        console.log(e);
+        setIsMetamaskInstalled(false);
+      }
     }
-  } catch (e) {
-    console.log(e);
-    setIsMetamaskInstalled(false);
-  }
+  }, []);
 
   if (isLoading) {
     return (
