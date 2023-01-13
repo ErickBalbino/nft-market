@@ -79,7 +79,7 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
     );
   }
 
-  if (isInstalled) {
+  if (isInstalled || window.ethereum) {
     return (
       <div>
         <button
