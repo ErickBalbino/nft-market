@@ -1,5 +1,6 @@
 import { CryptoHookFactory } from "@_types/hooks";
 import { ethers } from "ethers";
+import { useEffect } from "react";
 import useSWR from "swr";
 
 const NETWORKS: { [k: string]: string } = {
@@ -46,12 +47,14 @@ export const hookFactory: NetworkHookFactory =
       }
     );
 
+    useEffect(() => {}, []);
+
     return {
       ...swrResponse,
       data,
       isValidating,
       targetNetwork,
       isSuportted: data === targetNetwork,
-      isLoading: isLoading || isValidating,
+      isLoading: isLoading as boolean,
     };
   };
